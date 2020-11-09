@@ -42,13 +42,14 @@ def train():
 
     with open("data.pkl", "rb") as f:
         data = pickle.load(f)
-    train, test, word2id, tag2id = data['train'], data['test'], data['w2id'], data['t2id']
+    trainset, testset, word2id, tag2id = data['train'], data['test'], data['w2id'], data['t2id']
 
     model = Model((word2id, tag2id), embedding_size=300, tag_size=50, hidden_size=300, rnn_layers=1, dropout_rate=0.3)
     model.to(device)
 
     parameters = [p for p in model.parameters() if p.requires_grad]
 
+    # Binary CrossEntropy Loss
     criterion = nn.BCELoss()
 
     optimizer = optim.Adam(parameters)
@@ -58,7 +59,7 @@ def train():
 
     losses = []
     for epoch in range(1, epochs + 1):
-        num_data = len(train)
+        num_data = len(trainset)
         num_batch = (num_data + batch_size - 1) // batch_size
 
         model.train()
@@ -66,7 +67,7 @@ def train():
             start = ii * batch_size
             end = num_data if (ii + 1) * batch_size > num_data else (ii + 1) * batch_size
 
-            batch_data = train[start:end]
+            batch_data = trainset[start:end]
 
             batch_word_ids = [torch.tensor(data[0], dtype=torch.long) for data in batch_data]
             batch_tag_ids = [torch.tensor(data[1], dtype=torch.long) for data in batch_data]
@@ -97,18 +98,18 @@ def train():
                 print("%6d/%6d: loss %.6f" % (ii + 1, num_batch, sum(losses) / len(losses)))
                 losses = []
 
-        num_data = len(test)
+        num_data = len(testset)
         num_batch = (num_data + batch_size - 1) // batch_size
 
         model.eval()
 
-        total = len(test)
+        total = len(testset)
         match = 0
         for ii in range(num_batch):
             start = ii * batch_size
             end = num_data if (ii + 1) * batch_size > num_data else (ii + 1) * batch_size
 
-            batch_data = test[start:end]
+            batch_data = testset[start:end]
 
             batch_word_ids = [torch.tensor(data[0], dtype=torch.long) for data in batch_data]
             batch_tag_ids = [torch.tensor(data[1], dtype=torch.long) for data in batch_data]

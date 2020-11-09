@@ -4,7 +4,7 @@ import pickle
 
 
 def read_data(filename):
-    datas = []
+    dataset = []
     sent = []
     for line in open(filename):
         line = line.strip()
@@ -13,20 +13,20 @@ def read_data(filename):
             doc_id, label = sent[-1].split("\t")
 
             data = ([item.split(" ") for item in sent[:-1]], int(label))
-            datas.append(data)
+            dataset.append(data)
             sent = []
             continue
 
         sent.append(line)
 
-    return datas
+    return dataset
 
 
-def make_vocab(train):
+def make_vocab(dataset):
     words = {}
     tags = {}
 
-    for data in train:
+    for data in dataset:
         sent, label = data[0], data[1]
 
         for m, t in sent:
@@ -59,7 +59,7 @@ def convert_ids(word2id, tag2id, data, UNK=1):
     return word_ids, tag_ids, label
 
 
-if __name__ == "__main__":
+def main():
     traindata = read_data(os.path.join("data", "train_tagged.txt"))
     testdata = read_data(os.path.join("data", "test_tagged.txt"))
 
@@ -72,3 +72,7 @@ if __name__ == "__main__":
 
     with open('data.pkl', 'wb') as f:
         pickle.dump(data, f)
+
+
+if __name__ == "__main__":
+    main()
