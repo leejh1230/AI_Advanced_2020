@@ -218,6 +218,7 @@ def model_eval(model, dev, test, device, id2label):
     print("Test Evaluation in Best Model")
 
     total_answer_ids, total_pred_ids = [], []
+    total_words = [sent[3] for sent in test]
     for ii in range(num_batch):
         batch_word_ids, batch_tag_ids, batch_labels_ids = batchify(ii, batch_size, num_data, test)
 
@@ -246,7 +247,7 @@ if __name__ == "__main__":
     bidirectional = True
     use_pretrained = True
     use_crf = False
-    evaluate = False
+    evaluate = True
 
     train(epochs=epochs,
           batch_size=batch_size,

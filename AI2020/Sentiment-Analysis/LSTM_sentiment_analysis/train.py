@@ -6,12 +6,15 @@ import torch.optim as optim
 import pickle
 
 
+# 모델 정의
 class Model(nn.Module):
     def __init__(self, vocabs, embedding_size, tag_size, hidden_size, rnn_layers, dropout_rate):
         super(Model, self).__init__()
 
         word2id, tag2id = vocabs
+        # word 임베딩
         self.word_embeddings = nn.Embedding(len(word2id), embedding_size)
+        # TAG 임베딩
         self.tag_embeddings = nn.Embedding(len(tag2id), tag_size)
 
         self.lstm = nn.LSTM(embedding_size + tag_size, hidden_size, rnn_layers, batch_first=True, bidirectional=True)
@@ -62,6 +65,7 @@ def train():
         num_data = len(trainset)
         num_batch = (num_data + batch_size - 1) // batch_size
 
+        # Train
         model.train()
         for ii in range(num_batch):
             start = ii * batch_size
@@ -98,6 +102,7 @@ def train():
                 print("%6d/%6d: loss %.6f" % (ii + 1, num_batch, sum(losses) / len(losses)))
                 losses = []
 
+        # Eval
         num_data = len(testset)
         num_batch = (num_data + batch_size - 1) // batch_size
 

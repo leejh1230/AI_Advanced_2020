@@ -3,6 +3,7 @@ import operator
 import pickle
 
 
+# 데이터를 읽어옴
 def read_data(filename):
     dataset = []
     sent = []
@@ -22,6 +23,7 @@ def read_data(filename):
     return dataset
 
 
+# vocab 생성
 def make_vocab(dataset):
     words = {}
     tags = {}
@@ -50,6 +52,7 @@ def make_vocab(dataset):
     return word2id, tag2id
 
 
+# word 를 index 로 변경
 def convert_ids(word2id, tag2id, data, UNK=1):
     sent, label = data[0], data[1]
 
