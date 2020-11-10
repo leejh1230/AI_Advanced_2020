@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import pickle
 from transformers import AutoModel
-from transformers.optimization import AdamW, WarmupLinearSchedule
+from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 
 
 class Model(nn.Module):
@@ -57,7 +57,7 @@ def train():
     t_total = int(train_size / gradient_accumulation_steps * epochs)
 
     optimizer = AdamW(optimizer_grouped_parameters, lr=bert_lr, eps=adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps, t_total=t_total)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=t_total)
 
     losses = []
     for epoch in range(1, epochs + 1):
