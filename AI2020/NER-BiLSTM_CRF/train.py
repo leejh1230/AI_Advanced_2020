@@ -260,3 +260,15 @@ if __name__ == "__main__":
           use_crf=use_crf,
           dropout_rate=dropout_rate,
           evaluate=evaluate)
+
+    train(epochs=epochs,
+          batch_size=batch_size,
+          word_dim=word_dim,
+          pos_dim=pos_dim,
+          hidden_size=hidden_size,
+          rnn_layers=rnn_layers,
+          bidirectional=bidirectional,
+          use_pretrained=use_pretrained,
+          use_crf=use_crf,
+          dropout_rate=dropout_rate,
+          evaluate=False)
