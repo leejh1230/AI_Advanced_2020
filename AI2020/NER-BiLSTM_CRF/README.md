@@ -12,7 +12,7 @@ data/glove.6B.100d.txt
 
 ## CoNLL2003 data
 
-CoNLL2003 data 는 아래 링크에서 직접 다운로드 가능
+CoNLL2003 data 는 아래 링크에서 직접 다운로드 가능 \
 https://www.clips.uantwerpen.be/conll2003/ner/
 
 ![ex_CONLL2003](./images/CoNLL2003_ex.png)
